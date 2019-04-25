@@ -20,9 +20,9 @@ bl_info = {
     "name" : "Unofficial Sketchfab Exporter",
     "author" : "Bart Crouch - modified by Markus Berg",
     "description" : "Upload your model to Sketchfab",
-    "version:" : (2, 0, 0),
+    "version" : (2, 0, 1),
     "blender" : (2, 80, 0),
-    "location" : "View3D",
+    "location" : "View3D > Sidebar",
     "warning" : "Still unofficial and might cause crashes",
     "wiki_url": "",
     "category" : "Object"
@@ -48,6 +48,10 @@ from bpy.props import (
 SKETCHFAB_MODEL_URL_SHOW = "https://sketchfab.com/show/"
 SKETCHFAB_EXPORT_FILENAME = "sketchfab-export.blend"
 
+# api v1
+SKETCHFAB_API_TOKEN_URL = "https://api.sketchfab.com/v1/users/claim-token" # to be able to receive email with token
+
+# api v3
 SKETCHFAB_DOMAIN = 'sketchfab.com'
 SKETCHFAB_API_URL = 'https://api.{}/v3/models'.format(SKETCHFAB_DOMAIN)
 SKETCHFAB_MODEL_URL = 'https://{}/models/'.format(SKETCHFAB_DOMAIN)
@@ -313,9 +317,8 @@ class VIEW3D_PT_sketchfab(bpy.types.Panel):
         layout.prop(props, "categories")
         layout.prop(props, "isPublished")
         layout.prop(props, "isInspectable")
-        if props.isPublished and props.isInspectable:
-            layout.prop(props, "isDownloadable")
-        if props.isPublished and props.isInspectable and props.isDownloadable:
+        layout.prop(props, "isDownloadable")
+        if props.isDownloadable:
             layout.prop(props, "licenses")
         layout.prop(props, "private")
         if props.private:
@@ -339,6 +342,14 @@ class VIEW3D_PT_sketchfab(bpy.types.Panel):
 def update_isDownloadable(self, context):
     if not self.isInspectable or not self.isPublished:
         context.window_manager.sketchfab.isDownloadable = False
+
+# check publish and inspectable if checking downloadable
+def setting_downloadable(self, context):
+    if self.isDownloadable:
+        context.window_manager.sketchfab.isInspectable = True
+        context.window_manager.sketchfab.isPublished = True
+        if not self.isDownloadable: # to make sure it stays checked
+            self.isDownloadable = True
 
 # property group containing all properties for the user interface
 class SketchfabProps(bpy.types.PropertyGroup):
@@ -387,6 +398,7 @@ class SketchfabProps(bpy.types.PropertyGroup):
             name="Downloadable",
             description="Make your model downloadable for others",
             default=False,
+            update=setting_downloadable,
             )
     licenses : EnumProperty(
             name="License",
@@ -526,7 +538,7 @@ class SketchfabEmailToken_OT_Operator(bpy.types.Operator):
         if r.status_code != requests.codes.ok:
             self.report({'ERROR'}, "An error occured. Check the format of your email")
         else:
-            self.report({'INFO'}, "Your email was sent at your email address")
+            self.report({'INFO'}, "Your token was sent to your email address")
 
         return {'FINISHED'}
 
