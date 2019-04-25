@@ -1,6 +1,6 @@
 # The Unofficial Sketchfab Exporter add-on for Blender 2.8
 
-This is exactly the same as the official version except that it now works in Blender 2.8. And since Sketchfab, as of this writing, can't handle Blender 2.8 .blend files, the add-on converts the .blend file to an .fbx in the background and uploads that instead.
+This is exactly the same as the official version except that it now works in Blender 2.8. And since Sketchfab, as of this writing, can't handle Blender 2.8 .blend files, the add-on converts the .blend file to an .fbx in the background and uploads that instead. After installing the add-on it can be found by pressing the 'n' key in objectmode.
 
 ## Other Changes
 
