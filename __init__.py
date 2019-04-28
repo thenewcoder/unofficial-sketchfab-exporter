@@ -20,7 +20,7 @@ bl_info = {
     "name" : "Unofficial Sketchfab Exporter",
     "author" : "Bart Crouch - modified by Markus Berg",
     "description" : "Upload your model to Sketchfab",
-    "version" : (2, 0, 1),
+    "version" : (2, 0, 2),
     "blender" : (2, 80, 0),
     "location" : "View3D > Sidebar",
     "warning" : "Still unofficial and might cause crashes",
@@ -139,6 +139,20 @@ def upload_report(report_message, report_type):
     sf_state.report_message = report_message
     sf_state.report_type = report_type
 
+def print_current_settings(title, filename, props):
+    print("***START DEBUG SETTINGS***")
+    print("name", title)
+    print("description", props.description)
+    print("filename", filename)
+    print("tags", props.tags)
+    print("categories", [get_category_label(props.categories)])
+    print("isPublished", props.isPublished)
+    print("isInspectable", props.isInspectable)
+    print("license", get_license_label(props.licenses))
+    print("isDownloadable", props.isDownloadable)
+    print("private", props.private,)
+    print("***END DEBUG***")
+
 # upload the blend-file to sketchfab
 def upload(filepath, filename):
     import requests
@@ -150,6 +164,12 @@ def upload(filepath, filename):
     if not title:
         title = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
 
+    # for debugging
+    #print_current_settings(title, filename, props)
+
+    # make sure the license is set up properly
+    theLicense = get_license_label(props.licenses) if props.isDownloadable else None
+
     data = {
         "name": title,
         "description": props.description,
@@ -158,7 +178,7 @@ def upload(filepath, filename):
         "categories" : [get_category_label(props.categories)],
         "isPublished" : props.isPublished,
         "isInspectable" : props.isInspectable,
-        "license" : get_license_label(props.licenses),
+        "license" : [theLicense],
         "isDownloadable" : props.isDownloadable,
         "private": props.private,
         "token": props.token,
@@ -462,15 +482,15 @@ class SketchfabProps(bpy.types.PropertyGroup):
 def get_license_label(lic_id):
     if lic_id == 'CC':
         return "CC Attribution"
-    elif lic_id == 'CCSA':
+    if lic_id == 'CCSA':
         return "CC Attribution-ShareAlike"
-    elif lic_id == 'CCND':
+    if lic_id == 'CCND':
         return "CC Attribution-NoDerivs"
-    elif lic_id == 'CCNC':
+    if lic_id == 'CCNC':
         return "CC Attribution-NonCommercial"
-    elif lic_id == 'CCNCSA':
+    if lic_id == 'CCNCSA':
         return "CC Attribution-NonCommercial-ShareAlike"
-    elif lic_id == 'CCNCND':
+    if lic_id == 'CCNCND':
         return "CC Attribution-NonCommercial-NoDerivs"
 
 def get_category_label(cat_id):
