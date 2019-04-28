@@ -89,12 +89,14 @@ def prepare_assets(export_settings):
                 (export_settings['lights'] == 'SELECTION' and (ob.type == 'LAMP' or ob.type == 'LIGHT'))):
 
                 if not ob.select_get() and not ob.hide_get():
-                    ob.hide_set(True)
-                    hidden.add(ob)
+                    bpy.data.objects.remove(ob)  # to make it easier for the .fbx export
+                    #ob.hide_set(True)
+                    #hidden.add(ob)
             elif export_settings['lights'] == 'NONE' and (ob.type == 'LAMP' or ob.type == 'LIGHT'):
-                if not ob.hide_get():
-                    ob.hide_set(True)
-                    hidden.add(ob)
+                bpy.data.objects.remove(ob)  # to make it easier for the .fbx export
+                #if not ob.hide_get():
+                    #ob.hide_set(True)
+                    #hidden.add(ob)
 
     for img in images:
         if not img.packed_file:
