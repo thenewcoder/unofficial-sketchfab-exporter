@@ -383,7 +383,7 @@ class SketchfabProps(bpy.types.PropertyGroup):
             default="",
             )
     lights : EnumProperty(
-            name="lights",
+            name="Lights",
             items=(('ALL', "All", "Export all lights in the file"),
                    ('NONE', "None", "Don't export any lights"),
                    ('SELECTION', "Selection", "Only export selected lights")),
@@ -461,7 +461,7 @@ class SketchfabProps(bpy.types.PropertyGroup):
                    ('ARCHIT', 'Architecture', ""),
                    ('ARTABS', 'Art & abstract', ""),
                    ('CARVEH', 'Cars & vehicles', ""),
-                   ('CHACRE', 'CHaracters & creatures', ""),
+                   ('CHACRE', 'Characters & creatures', ""),
                    ('CULTHI', 'Cultural heritage & history', ""),
                    ('ELECGA', 'Electronics & gadgets', ""),
                    ('FASTYL', 'Fashion & style', ""),
