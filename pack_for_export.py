@@ -128,9 +128,9 @@ def write_result(filepath, filename, size):
 
 def export_fbx(filepath, filename):
     filename = filename.split('.')[0] + '.fbx'
-    filepath = filepath.rsplit('\\', 1)[0]
+    filepath = filepath.rsplit(os.sep, 1)[0]
     filepath = os.path.join(filepath, filename)
-    bpy.ops.export_scene.fbx(filepath=filepath, embed_textures=True, object_types={'MESH', 'LIGHT', 'OTHER'})
+    bpy.ops.export_scene.fbx(filepath=filepath, embed_textures=True)
     size = os.path.getsize(filepath)
     return filepath, filename, size
 
@@ -138,7 +138,6 @@ if __name__ == "__main__":
     try:
         export_settings = read_settings()
         filepath, filename, size = prepare_file(export_settings)
-        # export to fbx here - code working up to here it seems
         filepath, filename, size = export_fbx(filepath, filename)
         write_result(filepath, filename, size)
     except:
