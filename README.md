@@ -14,3 +14,6 @@ This is exactly the same as the official version except that it now works in Ble
 ## Disclaimer
 
 I'm not the author to the official Sketchfab exporter add-on. I did this project mostly to teach myself how to create add-ons for Blender. It's possible that there are still some bugs in the code, since I found it quite challenging to convert from 2.7. Hopefully it can still be useful to you until such a time Sketchfab updates their official add-on.
+
+
+![Image of Unofficial Sketchfab add-on in Blender 2.8](https://s3.amazonaws.com/cgcookie-rails/uploads%2F1556209674014-sketchfab+addon.png)
