@@ -20,7 +20,7 @@ bl_info = {
     "name" : "Unofficial Sketchfab Exporter",
     "author" : "Bart Crouch - modified by Markus Berg",
     "description" : "Upload your model to Sketchfab",
-    "version" : (2, 0, 2),
+    "version" : (2, 0, 3),
     "blender" : (2, 80, 0),
     "location" : "View3D > Sidebar",
     "warning" : "Still unofficial and might cause crashes",
@@ -568,9 +568,16 @@ class SketchfabEmailToken_OT_Operator(bpy.types.Operator):
 
 # remove file copy
 def terminate(filepath):
-    os.remove(filepath.rsplit('.', 1)[0] + '.blend')
-    os.remove(filepath)
-    os.rmdir(os.path.dirname(filepath))
+    try:
+        dir_path = os.path.dirname(filepath)
+        for file in os.listdir(dir_path):
+            if os.path.splitext(file)[-1] in (".blend", ".fbx"): # better safe than sorry
+                os.remove(os.path.join(dir_path, file))
+        #os.remove(filepath.rsplit('.', 1)[0] + '.blend')
+        #os.remove(filepath)
+        os.rmdir(dir_path)
+    except Exception as e:
+        print("Deletion error:", e)
 
 
 # Add-ons Preferences Update Panel
