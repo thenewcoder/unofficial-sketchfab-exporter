@@ -44,7 +44,7 @@ Unfortunately nothing is perfect. There are a few limitations when it comes to u
    While Blender 2.8 is in Beta, there will inevitably still be bugs that can cause some issues. And if any of those bugs are        related to FBX exporting, or to anything specfic you are doing in the scene, then maybe the upload will fail or cause weird issues with the uploaded model.
 
 3. **Materials & Textures** <br />
-   If your objects are missing their materias/textures after upload here are some references to help out: <br />
+   If your objects are missing their materials/textures after upload here are some references to help out: <br />
    &nbsp;&nbsp;[Materials and Textures](https://help.sketchfab.com/hc/en-us/articles/202600873-Materials-and-Textures) <br />
    &nbsp;&nbsp;[Why does my model upload white?](https://help.sketchfab.com/hc/en-us/articles/360000538863-Why-does-my-model-upload-white-) <br />
    &nbsp;&nbsp;[Blender Materials](https://help.sketchfab.com/hc/en-us/articles/209143886-Blender-Materials)
