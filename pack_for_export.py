@@ -126,11 +126,19 @@ def write_result(filepath, filename, size):
                 'size': size,
                 }, s)
 
-def export_fbx(filepath, filename):
+def export_fbx(filepath, filename, export_settings):
+    # export all or just selected objects
+    selection = export_settings['models'] == 'SELECTION'
+
+    # prepare file path    
     filename = filename.split('.')[0] + '.fbx'
     filepath = filepath.rsplit(os.sep, 1)[0]
     filepath = os.path.join(filepath, filename)
-    bpy.ops.export_scene.fbx(filepath=filepath, embed_textures=True)
+    
+    # export scene to .fbx
+    bpy.ops.export_scene.fbx(filepath=filepath, use_selection=selection,
+                             embed_textures=True)
+    
     size = os.path.getsize(filepath)
     return filepath, filename, size
 
@@ -138,7 +146,7 @@ if __name__ == "__main__":
     try:
         export_settings = read_settings()
         filepath, filename, size = prepare_file(export_settings)
-        filepath, filename, size = export_fbx(filepath, filename)
+        filepath, filename, size = export_fbx(filepath, filename, export_settings)
         write_result(filepath, filename, size)
     except:
         import traceback
