@@ -20,12 +20,12 @@ bl_info = {
     "name" : "Unofficial Sketchfab Exporter",
     "author" : "Bart Crouch - modified by Markus Berg",
     "description" : "Upload your model to Sketchfab",
-    "version" : (2, 0, 3),
+    "version" : (2, 0, 4),
     "blender" : (2, 80, 0),
     "location" : "View3D > Sidebar",
-    "warning" : "Still unofficial and might cause crashes",
+    "warning" : "Still unofficial and might crash",
     "wiki_url": "",
-    "category" : "Object"
+    "category" : "Import-Export"
 }
 
 import bpy
