@@ -18,9 +18,10 @@ This is a slightly modified and highly expanded version of the official add-on f
 1. Download the .zip file from this github repository
 2. Open Blender 2.8
 3. Open Edit -> Preferences -> Add-ons
-4. Click "Install" and find the .zip file you downloaded (make sure you install the .zip file itself, **not** individual .py files)
-5. Click the checkbox for "Object: Unofficial Sketchfab Exporter" to activiate it
-6. Click "Save Preferences" and close the preferences window
+4. If you have a previous version of the add-on already installed, please remove that one first.
+5. Click "Install" and find the .zip file you downloaded (make sure you install the .zip file itself, **not** individual .py files)
+6. Click the checkbox for "Import-Export: Unofficial Sketchfab Exporter" to activiate it
+7. Click "Save Preferences" and close the preferences window
 
 ## Usage
 
