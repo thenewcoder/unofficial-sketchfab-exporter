@@ -41,8 +41,10 @@ Unfortunately nothing is perfect. There are a few limitations when it comes to u
       &nbsp;&nbsp;[Animations](https://help.sketchfab.com/hc/en-us/articles/203058018-Animations) <br />
       &nbsp;&nbsp;[Blender - Animation](https://help.sketchfab.com/hc/en-us/articles/206223646)
     
-2. **Blender 2.8 Beta limitations** <br />
+2. **Blender 2.8 Beta issues** <br />
    While Blender 2.8 is in Beta, there will inevitably still be bugs that can cause some issues. And if any of those bugs are        related to FBX exporting, or to anything specfic you are doing in the scene, then maybe the upload will fail or cause weird issues with the uploaded model.
+   
+   <b><i>Important!</i></b> Before uploading your model to Sketchfab, make sure you don'that have some objects with applied scale/rotation and some objects without. Either you apply for all the objects, or apply for none. Because it will most likely cause issues with your model on Sketchfab. I have only been able to reproduce this issue when using .fbx files from Blender 2.8. It seems to work fine when exporting from 2.79.
 
 3. **Materials & Textures** <br />
    If your objects are missing their materials/textures after upload here are some references to help out: <br />
