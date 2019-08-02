@@ -18,12 +18,12 @@
 
 bl_info = {
     "name" : "Unofficial Sketchfab Exporter",
-    "author" : "Bart Crouch - modified by Markus Berg",
+    "author" : "Expanded by Markus Berg",
     "description" : "Upload your model to Sketchfab",
-    "version" : (2, 0, 4),
+    "version" : (2, 1, 0),
     "blender" : (2, 80, 0),
     "location" : "View3D > Sidebar",
-    "warning" : "Still unofficial and might crash",
+    "warning" : "",
     "wiki_url": "",
     "category" : "Import-Export"
 }
@@ -42,9 +42,6 @@ from bpy.props import (
         PointerProperty,
         )
 
-#SKETCHFAB_API_URL = "https://api.sketchfab.com"
-#SKETCHFAB_API_MODELS_URL = SKETCHFAB_API_URL + "/v1/models"
-#SKETCHFAB_API_TOKEN_URL = SKETCHFAB_API_URL + "/v1/users/claim-token"
 SKETCHFAB_MODEL_URL_SHOW = "https://sketchfab.com/show/"
 SKETCHFAB_EXPORT_FILENAME = "sketchfab-export.blend"
 
@@ -467,7 +464,7 @@ class SketchfabProps(bpy.types.PropertyGroup):
                    ('FASTYL', 'Fashion & style', ""),
                    ('FOODRI', 'Food & drink', ""),
                    ('FURHOM', 'Furniture & home', ""),
-                   ('MUSIC', 'Music', ""),
+                   ('MUSIC',  'Music', ""),
                    ('NATUPL', 'Nature & plants', ""),
                    ('NEWPOL', 'News & politics', ""),
                    ('PEOPLE', 'People', ""),
@@ -569,13 +566,8 @@ class SketchfabEmailToken_OT_Operator(bpy.types.Operator):
 # remove file copy
 def terminate(filepath):
     try:
-        dir_path = os.path.dirname(filepath)
-        for file in os.listdir(dir_path):
-            if os.path.splitext(file)[-1] in (".blend", ".fbx"): # better safe than sorry
-                os.remove(os.path.join(dir_path, file))
-        #os.remove(filepath.rsplit('.', 1)[0] + '.blend')
-        #os.remove(filepath)
-        os.rmdir(dir_path)
+        os.remove(filepath)
+        os.rmdir(os.path.dirname(filepath))
     except Exception as e:
         print("Deletion error:", e)
 
