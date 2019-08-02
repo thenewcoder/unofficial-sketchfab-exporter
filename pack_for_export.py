@@ -54,15 +54,32 @@ def save_blend_copy():
 
 # change visibility statuses and pack images
 def prepare_assets(export_settings):
-    hidden = set()
     images = set()
-    if (export_settings['models'] == 'SELECTION' or
-        export_settings['lights'] != 'ALL'):
 
-        for ob in bpy.data.objects:
-            if ob.type == 'MESH':
+    for ob in bpy.data.objects:
+
+        # make sure settings are correct so that sketchfab won't reject the upload
+        if ob.type in ('MESH', 'LIGHT'):
+            if ob.hide_get() or ob.hide_viewport: # delete the ones that are hidden
+                bpy.data.objects.remove(ob)
+                continue
+        else: # it's something else
+            if ob.hide_viewport: # delete the ones that are disabled in viewport
+                bpy.data.objects.remove(ob)
+                continue
+        if ob.hide_render: # make sure it's turned on for all objects or sketchfab will reject the upload
+            ob.hide_render = False
+
+        # prepare meshes
+        if ob.type == 'MESH':
+            
+            # the current object is what we want
+            if ((export_settings['models'] == 'SELECTION' and ob.select_get()) or
+                export_settings['models'] == 'ALL'):
+                
+                # go through the materials
                 for mat_slot in ob.material_slots:
-                    #CYCLES RENDER
+                    # CYCLES RENDER and EEVEE
                     if bpy.context.scene.render.engine in ('CYCLES', 'BLENDER_EEVEE'):
                         if not mat_slot.material:
                             continue
@@ -71,33 +88,22 @@ def prepare_assets(export_settings):
                         imgnodes = [n for n in mat_slot.material.node_tree.nodes if n.type == 'TEX_IMAGE']
                         for node in imgnodes:
                             if node.image is not None:
-                                images.add(node.image)
-                    #BLENDER RENDER
-                    else:
-                        if not mat_slot.material:
-                            continue
-                        for tex_slot in mat_slot.material.texture_slots:
-                            if not tex_slot:
-                                continue
-                            tex = tex_slot.texture
-                            if tex.type == 'IMAGE':
-                                image = tex.image
-                                if image is not None:
-                                    images.add(image)
+                                images.add(node.image)            
+                    
+            # it's not an object we want - so remove it
+            else:
+                bpy.data.objects.remove(ob)
+                continue
 
-            if ((export_settings['models'] == 'SELECTION' and ob.type == 'MESH') or
-                (export_settings['lights'] == 'SELECTION' and (ob.type == 'LAMP' or ob.type == 'LIGHT'))):
+        # go through the lights
+        elif ob.type == 'LIGHT':
+            
+            # it's NOT a light that we want - remove it
+            if ((export_settings['lights'] == 'SELECTION' and not ob.select_get()) or
+                export_settings['lights'] == 'NONE'):
+                bpy.data.objects.remove(ob)
 
-                if not ob.select_get() and not ob.hide_get():
-                    bpy.data.objects.remove(ob)  # to make it easier for the .fbx export
-                    #ob.hide_set(True)
-                    #hidden.add(ob)
-            elif export_settings['lights'] == 'NONE' and (ob.type == 'LAMP' or ob.type == 'LIGHT'):
-                bpy.data.objects.remove(ob)  # to make it easier for the .fbx export
-                #if not ob.hide_get():
-                    #ob.hide_set(True)
-                    #hidden.add(ob)
-
+    # prepare images
     for img in images:
         if not img.packed_file:
             try:
@@ -126,27 +132,10 @@ def write_result(filepath, filename, size):
                 'size': size,
                 }, s)
 
-def export_fbx(filepath, filename, export_settings):
-    # export all or just selected objects
-    selection = export_settings['models'] == 'SELECTION'
-
-    # prepare file path    
-    filename = filename.split('.')[0] + '.fbx'
-    filepath = filepath.rsplit(os.sep, 1)[0]
-    filepath = os.path.join(filepath, filename)
-    
-    # export scene to .fbx
-    bpy.ops.export_scene.fbx(filepath=filepath, use_selection=selection,
-                             embed_textures=True)
-    
-    size = os.path.getsize(filepath)
-    return filepath, filename, size
-
 if __name__ == "__main__":
     try:
         export_settings = read_settings()
         filepath, filename, size = prepare_file(export_settings)
-        filepath, filename, size = export_fbx(filepath, filename, export_settings)
         write_result(filepath, filename, size)
     except:
         import traceback
