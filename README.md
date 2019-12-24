@@ -1,5 +1,7 @@
 [![HitCount](http://hits.dwyl.io/thenewcoder/unofficial-sketchfab-exporter.svg)](http://hits.dwyl.io/thenewcoder/unofficial-sketchfab-exporter)
 
+<i> Update: Sketchfab has released an updated official Blender 2.8 add-on now. It seems to still be in Beta but it's many times better than their previous one, with tons of cool updates that were only possible after an extension update to their API. The new official Sketchfab add-on incorporates a lot of features that I was trying to learn how to do myself, but would have really been impossible without the new download API extension. So I highly recommend you check it out: [Official Sketchfab plugin on github](https://github.com/sketchfab/blender-plugin/releases). Feel free to use my "outdated" version to teach yourself or as a starting point to create your own Sketchfab exporter. :)
+
 # The Unofficial Sketchfab Exporter add-on for Blender 2.8
 
 This is a slightly modified and highly expanded version of the official add-on for Blender 2.7x. But most importantly, it now works in Blender 2.8. The add-on has been tested on both Windows 10 and Ubuntu 18.04. <s>Since Sketchfab, as of this writing, can't read  Blender 2.8 .blend files, this add-on overcomes the issue by first converting the .blend file to an .fbx in the background and then uploads that instead.</s> Sketchfab finally supports native Blender 2.8 .blend files, and you no longer need to convert/export to other file types, and I have updated the add-on accordingly!
